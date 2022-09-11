@@ -1,0 +1,14 @@
+  ADDR B1 B2 B3 B4 E:\labs_3sem\KProg\Lab1\lab1.asm                 PAGE       1
+
+                    org $8000
+
+                               ;
+  8000 86 0A        ldaa #$0a  ;   $ff
+  8002 16           tab        ;    B
+
+                               ;
+  8003 86 AA        ldaa #$aa  ;   $aa
+  8005 36           psha       ;
+  8006 33           pulb       ;     B
+
+

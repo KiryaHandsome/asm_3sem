@@ -1,0 +1,6 @@
+#labs conditions
+labs/
+
+#report files
+*.docx
+*.pdf
