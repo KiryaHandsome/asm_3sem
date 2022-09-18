@@ -1,0 +1,26 @@
+  ADDR B1 B2 B3 B4 E:\labs_3sem\asm_3sem\Lab2\lab2.asm              PAGE       1
+
+                           org $8000
+  8000 CC 10 50            ldd   #$1050
+  8003 CE FF FF            ldx   #$ffff ; set values to registers
+  8006 18 CE 77 77         ldy   #$7777
+
+  800A DF 01               stx   $01
+  800C 18 DF 03            sty   $03  ; store x, y and d registers in memory
+  800F DD 05               std   $05
+  8011 CC 00 00            ldd   #0   ; clear double register d
+
+  8014 CE 00 0A            ldx   #$0a
+  8017 A7 00               staa  0,x  ; set zero to some memory
+  8019 18 CE 00 06         ldy   #6
+                   loop:
+  801D 18 EB 00            addb  0,y
+  8020 A9 00               adca  0,x  ; a - counter of carries
+  8022 18 09               dey        ; decrement y
+  8024 26 F7               bne   loop ; branch if not equal to zero
+
+                           ; d is answer
+
+  Symbol Table 
+
+  LOOP               801D
