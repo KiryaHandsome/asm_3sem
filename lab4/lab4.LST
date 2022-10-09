@@ -1,0 +1,29 @@
+  ADDR B1 B2 B3 B4 E:\labs_3sem\asm_3sem\lab4\lab4.asm              PAGE       1
+
+                    org $8000
+  8000 18 CE 22 00         ldy  #$2200
+  8004 CE 00 00            ldx  #0     ;   x
+                   end     equ  $22ff
+
+                   loop:
+  8007 86 01               ldaa #1
+  8009 18 A4 00            anda 0,y
+  800C 27 0B               beq  incCounter ;
+  800E 18 08       cntnue  iny
+  8010 18 8C 22 FF         cpy  #end
+  8014 23 F1               bls  loop       ;  <= end,
+  8016 7E 80 1D            jmp Done        ;
+                   incCounter:
+  8019 08                  inx
+  801A 7E 80 0E            jmp cntnue
+
+                   Done:
+  801D 01                  nop
+
+  Symbol Table 
+
+  DONE               801D
+  INCCOUNTER         8019
+  CNTNUE             800E
+  END                22FF
+  LOOP               8007
