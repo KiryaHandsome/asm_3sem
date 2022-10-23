@@ -1,7 +1,7 @@
 	org $8000
 
  	ldaa     #$ff
- 	ldab     #0
+ 	ldab     #$ff
  	ldy      #1   ; pointer to memory with a and b
  	std      0,y 
  	ldaa     #8   ; counter

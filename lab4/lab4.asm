@@ -1,19 +1,29 @@
  org $8000
-	ldy  #$2200 
-	ldx  #0     ; ответ в x
-end 	equ  $22ff
+	
+	jmp main
 
 loop: 
 	ldaa #1
 	anda 0,y
 	beq  incCounter ; если число четно
-cntnue	iny
+contin	iny
 	cpy  #end
 	bls  loop	; если <= end, то продолжаем
-	jmp Done	; завершение программы
+	stx  $5
+	rti		; завершение программы
+
 incCounter:
 	inx
-	jmp cntnue
+	jmp contin
+	
 
-Done:
-	nop
+main:
+	ldx  #$8003 ; адрес первой команды в loop
+	stx  $fff6  ; адрес программного прерывания
+	ldx $5
+	ldy  #$2200 
+	ldx  #0     ; ответ в x
+end 	equ  $22ff
+	swi
+	ldx  $5
+	

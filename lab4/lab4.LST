@@ -1,29 +1,39 @@
-  ADDR B1 B2 B3 B4 E:\labs_3sem\asm_3sem\lab4\lab4.asm              PAGE       1
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
 
                     org $8000
-  8000 18 CE 22 00         ldy  #$2200
-  8004 CE 00 00            ldx  #0     ;   x
-                   end     equ  $22ff
+
+  8000 7E 80 19            jmp main
 
                    loop:
-  8007 86 01               ldaa #1
-  8009 18 A4 00            anda 0,y
-  800C 27 0B               beq  incCounter ;
-  800E 18 08       cntnue  iny
-  8010 18 8C 22 FF         cpy  #end
-  8014 23 F1               bls  loop       ;  <= end,
-  8016 7E 80 1D            jmp Done        ;
-                   incCounter:
-  8019 08                  inx
-  801A 7E 80 0E            jmp cntnue
+  8003 86 01               ldaa #1
+  8005 18 A4 00            anda 0,y
+  8008 27 0B               beq  incCounter ;
+  800A 18 08       contin  iny
+  800C 18 8C 22 FF         cpy  #end
+  8010 23 F1               bls  loop       ;  <= end,
+  8012 DF 05               stx  $5
+  8014 3B                  rti             ;
 
-                   Done:
-  801D 01                  nop
+                   incCounter:
+  8015 08                  inx
+  8016 7E 80 0A            jmp contin
+
+
+                   main:
+  8019 CE 80 03            ldx  #$8003 ;     loop
+  801C FF FF F6            stx  $fff6  ;
+  801F DE 05               ldx $5
+  8021 18 CE 22 00         ldy  #$2200
+  8025 CE 00 00            ldx  #0     ;   x
+                   end     equ  $22ff
+  8028 3F                  swi
+  8029 DE 05               ldx  $5
+
 
   Symbol Table 
 
-  DONE               801D
-  INCCOUNTER         8019
-  CNTNUE             800E
+  INCCOUNTER         8015
+  MAIN               8019
+  CONTIN             800A
   END                22FF
-  LOOP               8007
+  LOOP               8003

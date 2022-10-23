@@ -2,29 +2,26 @@
 
                            org $8000
 
-  8000 86 FF               ldaa     #$ff
-  8002 47                  asra
-  8003 47           asra
-  8004 47           asra
-  8005 C6 00               ldab     #0
-  8007 18 CE 00 01         ldy      #1   ; pointer to memory with a and b
-  800B 18 ED 00            std      0,y
-  800E 86 08               ldaa     #8   ; counter
-  8010 97 05               staa     $5   ; load counter to memory
-  8012 CC 00 00            ldd      #0   ; clear accumulator d
+  8000 86 00               ldaa     #$0
+  8002 C6 FF               ldab     #$ff
+  8004 18 CE 00 01         ldy      #1   ; pointer to memory with a and b
+  8008 18 ED 00            std      0,y
+  800B 86 08               ldaa     #8   ; counter
+  800D 97 05               staa     $5   ; load counter to memory
+  800F CC 00 00            ldd      #0   ; clear accumulator d
                    loop:
-  8015 05                  lsld
-  8016 18 68 00            lsl     0,y   ; logical shift left of b
-  8019 C9 00               adcb    #0    ; set bit 0 of a to bit 0 of
+  8012 05                  lsld
+  8013 18 68 00            lsl     0,y   ; logical shift left of b
+  8016 C9 00               adcb    #0    ; set bit 7 of a to bit 0 of
 .                  accumulator d
-  801B 05                  lsld          ; logical shift left acc d
-  801C 18 68 01            lsl     1,y   ; logical shift left of a
-  801F C9 00               adcb    #0
-  8021 7A 00 05            dec     $5    ; decrement counter
-  8024 26 EF               bne     loop
+  8018 05                  lsld          ; logical shift left acc d
+  8019 18 68 01            lsl     1,y   ; logical shift left of a
+  801C C9 00               adcb    #0
+  801E 7A 00 05            dec     $5    ; decrement counter
+  8021 26 EF               bne     loop
 
-  8026 8F                  xgdx          ; return value to x
+  8023 8F                  xgdx          ; return value to x
 
   Symbol Table 
 
-  LOOP               8015
+  LOOP               8012
