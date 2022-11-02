@@ -4,3 +4,10 @@ labs/
 #report files
 *.docx
 *.pdf
+
+#executable files
+*.exe
+*.com
+
+#other
+!*.asm

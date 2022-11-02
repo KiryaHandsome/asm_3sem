@@ -20,7 +20,7 @@ incCounter:
 main:
 	ldx  #$8003 ; адрес первой команды в loop
 	stx  $fff6  ; адрес программного прерывания
-	ldx $5
+	ldx  $5
 	ldy  #$2200 
 	ldx  #0     ; ответ в x
 end 	equ  $22ff

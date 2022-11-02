@@ -22,7 +22,7 @@
                    main:
   8019 CE 80 03            ldx  #$8003 ;     loop
   801C FF FF F6            stx  $fff6  ;
-  801F DE 05               ldx $5
+  801F DE 05               ldx  $5
   8021 18 CE 22 00         ldy  #$2200
   8025 CE 00 00            ldx  #0     ;   x
                    end     equ  $22ff
