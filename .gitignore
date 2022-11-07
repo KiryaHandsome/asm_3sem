@@ -8,6 +8,3 @@ labs/
 #executable files
 *.exe
 *.com
-
-#other
-!*.asm

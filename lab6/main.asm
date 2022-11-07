@@ -7,7 +7,7 @@ data segment
     resultMsg db 'Entered string without words which are numbers: $'
     writeln db 0x0a,0x0d, '$'
     MAX_LEN equ 202
-    length dw ?      
+    length dw ?    
     buffer db MAX_LEN dup('$')
 ends
 
@@ -23,18 +23,19 @@ start:
     mov es, ax
  
     mov buffer[0],MAX_LEN - 2 
-    call inputString  
-    
+    call inputString
+     
     mov cx, 0          ;clear cx
     mov cl, buffer[1]  ;set real size of string to CL
     mov length, cx
     mov si, 0          ;si - current index, 
-    mov bx, 0          ;bx - index to write
+    mov bx, 0          ;bx - index to write 
     
 process:
     cmp si, length
     jge endProgram
-    cmp buffer[si + 2], ' '
+    mov al,buffer[si + 2] 
+    cmp al, ' '
     jne isDecimal           ;check for numbers
     call writeCurrentChar
     jmp process       
@@ -43,7 +44,8 @@ writeWord:
     call writeCurrentChar
     cmp length, si
     jle  endProgram
-    cmp buffer[si + 2], ' '
+    mov al,buffer[si + 2] 
+    cmp al, ' '
     je process
     jmp writeWord
         
@@ -54,22 +56,24 @@ isDecimal:
     ; TODO 
     ; check word for decimal number
     ;mov dx, 0  ;size of current word
-    mov bp, si
+    mov di, si
 proceed:
-    cmp bp, length
-    jge endProgram 
-    cmp buffer[bp + 2], ' ' 
+    cmp di, length
+    jge endProgram
+    mov al, buffer[di + 2] 
+    cmp al, ' ' 
     jne isNotSpace
 isSpace:    
-    mov si, bp
+    mov si, di
     inc si
     jmp process
-isNotSpace:    
-    cmp buffer[bp + 2], 9
-    jg isHexadecimal      ;if greater
-    cmp buffer[bp + 2], 0
-    jl isHexadecimal      ;if less
-    inc bp
+isNotSpace:
+    mov al,buffer[di + 2]     
+    cmp al,'9'
+    jg isHexadecimal       ;if greater
+    cmp al, '0'
+    jl isHexadecimal       ;if less
+    inc di
     jmp proceed
     
 isHexadecimal:
@@ -103,7 +107,7 @@ outputString proc
 outputString endp
 
 endProgram:
-    mov buffer[si + 2], '$' ;make terminated string
+    mov buffer[bx + 2], '$' ;make terminated string
     lea dx, writeln
     call outputString
       
