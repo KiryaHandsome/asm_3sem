@@ -40,48 +40,104 @@ process:
     call writeCurrentChar
     jmp process       
     
-writeWord:    
+writeWord:                      ;write
     call writeCurrentChar
-    cmp length, si
+    cmp length, si              ;check for end of string
     jle  endProgram
-    mov al,buffer[si + 2] 
+    mov al,buffer[si + 2]       ;copy current index to al
     cmp al, ' '
     je process
     jmp writeWord
-        
-    ;./////////    
     
     
 isDecimal:
-    ; TODO 
-    ; check word for decimal number
-    ;mov dx, 0  ;size of current word
-    mov di, si
-proceed:
-    cmp di, length
+    mov di, si           ;copy current index
+proceed1:
+    cmp di, length       ;check for end of string
     jge endProgram
     mov al, buffer[di + 2] 
     cmp al, ' ' 
-    jne isNotSpace
-isSpace:    
-    mov si, di
+    jne isNotSpace1
+isSpace1:    
+    mov si, di           ;move current index 
     inc si
     jmp process
-isNotSpace:
+isNotSpace1:
     mov al,buffer[di + 2]     
-    cmp al,'9'
-    jg isHexadecimal       ;if greater
-    cmp al, '0'
-    jl isHexadecimal       ;if less
+    call isDigit
+    and ah, ah
+    jz isHexadecimal
     inc di
-    jmp proceed
+    jmp proceed1
     
 isHexadecimal:
     ; TODO 
     ; check word for hexadecimal number
-    jmp writeWord
-    ;mov si, bp
-    ;jmp incCurrIndex
+    mov di, si
+    mov al, buffer[di + 2]
+    cmp al, '0'
+    jne writeWord
+    mov al, buffer[di + 2 + 1]
+    cmp al, 'x'
+    jne writeWord
+    add di, 2
+proceed2:
+    cmp di, length       ;check for end of string
+    jge endProgram
+    mov al, buffer[di + 2]
+    cmp al, ' ' 
+    jne isNotSpace2
+isSpace2:    
+    mov si, di           ;move current index 
+    inc si
+    jmp process
+isNotSpace2:    
+    mov al, buffer[di + 2]
+    inc di
+    call isDigit
+    and ah, ah
+    jnz proceed2
+    call isABCDEF
+    and ah, ah   
+    jz writeWord         ;if is not abcdef
+    inc di 
+    jmp proceed2
+    
+isDigit proc
+    cmp al,'9'        ;check for number
+    jg isNotDig       ;if greater
+    cmp al, '0'
+    jl isNotDig       ;if less
+isDig:
+    mov ah, 1
+    ret 
+isNotDig:
+    mov ah, 0
+    ret
+isDigit endp
+
+isABCDEF proc
+    mov ah, 'a'
+    mov cx, 6
+isSmallLetter:         ;check for small letters 
+    cmp al, ah
+    je exitTrue
+    inc ah
+    loop isSmallLetter
+    mov ah, 'A'
+    mov cx, 6
+isBigLetter:          ;check for big letters
+    cmp al, ah
+    je exitTrue
+    inc ah
+    loop isBigLetter    
+exitFalse:
+    mov ah, 0
+    ret
+exitTrue:
+    mov ah, 1
+    ret     
+isABCDEF endp
     
 writeCurrentChar proc
     mov ah, buffer[si + 2] 
