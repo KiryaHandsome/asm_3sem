@@ -1,5 +1,3 @@
-; multi-segment executable file template.
-
 data segment
     ; add your data here!
     pkey db "Press any key...$"
@@ -62,8 +60,7 @@ isSpace1:
     mov si, di           ;move current index 
     inc si
     jmp process
-isNotSpace1:
-    mov al,buffer[di + 2]     
+isNotSpace1:   
     call isDigit
     and ah, ah
     jz isHexadecimal
@@ -71,15 +68,13 @@ isNotSpace1:
     jmp proceed1
     
 isHexadecimal:
-    ; TODO 
-    ; check word for hexadecimal number
     mov di, si
     mov al, buffer[di + 2]
-    cmp al, '0'
-    jne writeWord
+    cmp al, '0'                     ;check for 0x 
+    jne writeWord                   ;in the beginning of word
     mov al, buffer[di + 2 + 1]
     cmp al, 'x'
-    jne writeWord
+    jne writeWord                   ;if is not hex-number write it
     add di, 2
 proceed2:
     cmp di, length       ;check for end of string
@@ -99,7 +94,7 @@ isNotSpace2:
     jnz proceed2
     call isABCDEF
     and ah, ah   
-    jz writeWord         ;if is not abcdef
+    jz writeWord       ;if is not abcdef
     inc di 
     jmp proceed2
     
@@ -118,7 +113,7 @@ isDigit endp
 
 isABCDEF proc
     mov ah, 'a'
-    mov cx, 6
+    mov cx, 6          ;set 6 to counter
 isSmallLetter:         ;check for small letters 
     cmp al, ah
     je exitTrue
@@ -165,8 +160,7 @@ outputString endp
 endProgram:
     mov buffer[bx + 2], '$' ;make terminated string
     lea dx, writeln
-    call outputString
-      
+    call outputString      
     lea dx, resultMsg
     call outputString
     lea dx, buffer + 2
